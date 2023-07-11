@@ -47,14 +47,16 @@ frame_right.grid(row=0, column=1, rowspan=2, padx=1, pady=0, sticky=NSEW)
 app_name = Label(frame_top, text='Formulario de Consultoria', anchor=NW, font=('Ivy 13 bold'), bg=co2, fg=co1, relief='flat')
 app_name.place(x=10, y=20)
 
+global tree
+
 # Funcão Inserir
 def inserir():
-    nome = app_nome.delete(0, 'end')
-    email = app_email.delete(0, 'end')
-    tel = app_tel.delete(0, 'end')
-    dia = app_cal.delete(0, 'end')
-    estado = app_estado.delete(0, 'end')
-    assunto = app_sobre.delete(0, 'end')
+    nome = e_nome.get()
+    email = e_email.get()
+    tel = e_tel.get()
+    dia = e_cal.get()
+    estado = e_estado.get()
+    assunto = e_sobre.get()
     
     lista = [nome, email, tel, dia, estado, assunto]
     
@@ -64,12 +66,12 @@ def inserir():
         inserir_info(lista)
         messagebox.showinfo('Sucesso', 'Os dados foram inseridos com sucesso')
         
-        nome.delete(0, 'end')
-        email = app_email.delete(0, 'end')
-        tel = app_tel.delete(0, 'end')
-        dia = app_cal.delete(0, 'end')
-        estado = app_estado.delete(0, 'end')
-        assunto = app_sobre.delete(0, 'end')
+        e_nome.delete(0, 'end')
+        e_email.delete(0, 'end')
+        e_tel.delete(0, 'end')
+        e_cal.delete(0, 'end')
+        e_estado.delete(0, 'end')
+        e_sobre.delete(0, 'end')
         
     for widget in frame_right.winfo_children():
         widget.destroy()
@@ -77,39 +79,41 @@ def inserir():
     mostrar()
 
 
-# Funcão Inserir
+# Função atualizar
+
+
 def atualizar():
     try:
         treev_dados = tree.focus()
         treev_dicionario = tree.item(treev_dados)
         tree_lista = treev_dicionario['values']
         
-        valor = tree_lista[0]
+        valor_id = tree_lista[0]
         
-        app_nome.delete(0, 'end')
-        app_email.delete(0, 'end')
-        app_tel.delete(0, 'end')
-        app_cal.delete(0, 'end')
-        app_estado.delete(0, 'end')
-        app_sobre.delete(0, 'end')
+        e_nome.delete(0, 'end')
+        e_email.delete(0, 'end')
+        e_tel.delete(0, 'end')
+        e_cal.delete(0, 'end')
+        e_estado.delete(0, 'end')
+        e_sobre.delete(0, 'end')
         
-        app_nome.insert(0, tree_lista[1])
-        app_email.insert(0, tree_lista[2])
-        app_tel.insert(0, tree_lista[3])
-        app_cal.insert(0, tree_lista[4])
-        app_estado.insert(0, tree_lista[5])
-        app_sobre.insert(0, tree_lista[6])
+        e_nome.insert(0, tree_lista[1])
+        e_email.insert(0, tree_lista[2])
+        e_tel.insert(0, tree_lista[3])
+        e_cal.insert(0, tree_lista[4])
+        e_estado.insert(0, tree_lista[5])
+        e_sobre.insert(0, tree_lista[6])
         
-       
+       #Mensagem para update:
         def update():
-            nome = app_nome.delete(0, 'end')
-            email = app_email.delete(0, 'end')
-            tel = app_tel.delete(0, 'end')
-            dia = app_cal.delete(0, 'end')
-            estado = app_estado.delete(0, 'end')
-            assunto = app_sobre.delete(0, 'end')
+            nome = e_nome.get()
+            email = e_email.get()
+            tel = e_tel.get()
+            dia = e_cal.get()
+            estado = e_estado.get()
+            assunto = e_sobre.get()
             
-            lista = [nome, email, tel, dia, estado, assunto]
+            lista = [nome, email, tel, dia, estado, assunto, valor_id]
             
             if nome=='':
                 messagebox.showerror('Erro', 'O nome não pode ser vázio')
@@ -117,83 +121,108 @@ def atualizar():
                 atualizar_info(lista)
                 messagebox.showinfo('Sucesso', 'Os dados foram atualizados com sucesso')
                 
-                app_nome.delete(0, 'end')
-                app_email = app_email.delete(0, 'end')
-                app_tel = app_cal.delete(0, 'end')
-                dia = app_cal.delete(0, 'end')
-                estado = app_estado.delete(0, 'end')
-                assunto = app_sobre.delete(0, 'end')
+                nome = e_nome.delete(0, 'end')
+                email = e_email.delete(0, 'end')
+                tel = e_cal.delete(0, 'end')
+                dia = e_cal.delete(0, 'end')
+                estado = e_estado.delete(0, 'end')
+                assunto = e_sobre.delete(0, 'end')
                 
             for widget in frame_right.winfo_children():
                 widget.destroy()
                 
-            #Botão atualizar:
-            b_confirmar = Button(frame_bottom,command=update, text='Atualizar', width=10, anchor=NW, font=('Ivy 7 bold'), bg=co2, fg=co1, relief='raised', overrelief='ridge')
-            b_confirmar.place(x=110, y=380)
-                
             mostrar()
+                
+        #Botão atualizar:
+        b_confirmar = Button(frame_bottom,command=update, text='Confirmar', width=10, anchor=NW, font=('Ivy 7 bold'), bg=co2, fg=co1, relief='raised', overrelief='ridge')
+        b_confirmar.place(x=110, y=370)
+                
         
     except IndexError:
         messagebox.showerror('Erro', 'Seleciona um dos dados na tabela')
 
 
+# Função deletar
+def deletar(): 
+    try:
+        treev_dados = tree.focus()
+        treev_dicionario = tree.item(treev_dados)
+        tree_lista = treev_dicionario['values']
         
+        valor_id = [tree_lista[0]]
+        
+        deletar_info(valor_id)
+        messagebox.showinfo('Sucesso', 'Os dados foram deletados com sucesso')
+       
+        for widget in frame_right.winfo_children():
+            widget.destroy()
+         
+        mostrar()
+    
+    except IndexError:
+        messagebox.showerror('Erro', 'Seleciona um dos dados na tabela')
+
+    
+        
+    
         
 ################# Setting up bottom frame ###############
 
 #Nome:
-app_nome = Label(frame_bottom,text='Nome *', anchor=NW, font=('Ivy 10 bold'), bg=co1, fg=co4, relief='flat')
-app_nome.place(x=10, y=10)
-app_nome = Entry(frame_bottom, width=45, justify='left', relief='solid')
-app_nome.place(x=15, y=40)
+l_nome = Label(frame_bottom,text='Nome *', anchor=NW, font=('Ivy 10 bold'), bg=co1, fg=co4, relief='flat')
+l_nome.place(x=10, y=10)
+e_nome = Entry(frame_bottom, width=45, justify='left', relief='solid')
+e_nome.place(x=15, y=40)
 
 #Email:
-app_email = Label(frame_bottom,text='Email *', anchor=NW, font=('Ivy 10 bold'), bg=co1, fg=co4, relief='flat')
-app_email.place(x=10, y=70)
-app_email = Entry(frame_bottom, width=45, justify='left', relief='solid')
-app_email.place(x=15, y=100)
+l_email = Label(frame_bottom,text='Email *', anchor=NW, font=('Ivy 10 bold'), bg=co1, fg=co4, relief='flat')
+l_email.place(x=10, y=70)
+e_email = Entry(frame_bottom, width=45, justify='left', relief='solid')
+e_email.place(x=15, y=100)
 
 #Telefone:
-app_tel = Label(frame_bottom,text='Telefone *', anchor=NW, font=('Ivy 10 bold'), bg=co1, fg=co4, relief='flat')
-app_tel.place(x=10, y=130)
-app_tel = Entry(frame_bottom, width=45, justify='left', relief='solid')
-app_tel.place(x=15, y=160)
+l_tel = Label(frame_bottom,text='Telefone *', anchor=NW, font=('Ivy 10 bold'), bg=co1, fg=co4, relief='flat')
+l_tel.place(x=10, y=130)
+e_tel = Entry(frame_bottom, width=45, justify='left', relief='solid')
+e_tel.place(x=15, y=160)
 
 #Data da consulta:
-app_cal = Label(frame_bottom,text='Data da consulta *', anchor=NW, font=('Ivy 10 bold'), bg=co1, fg=co4, relief='flat')
-app_cal.place(x=10, y=190)
-app_cal = DateEntry(frame_bottom, width=12, background='darkblue', foreground='white', borderwidth=2)
-app_cal.place(x=15, y=220)
+l_cal = Label(frame_bottom,text='Data da consulta *', anchor=NW, font=('Ivy 10 bold'), bg=co1, fg=co4, relief='flat')
+l_cal.place(x=10, y=190)
+e_cal = DateEntry(frame_bottom, width=12, background='darkblue', foreground='white', borderwidth=2)
+e_cal.place(x=15, y=220)
 
 #Estado da consulta:
-app_estado = Label(frame_bottom,text='Estado da consulta *', anchor=NW, font=('Ivy 10 bold'), bg=co1, fg=co4, relief='flat')
-app_estado.place(x=160, y=190)
-app_estado = Entry(frame_bottom, width=20, justify='left', relief='solid')
-app_estado.place(x=160, y=220)
+l_estado = Label(frame_bottom,text='Estado da consulta *', anchor=NW, font=('Ivy 10 bold'), bg=co1, fg=co4, relief='flat')
+l_estado.place(x=160, y=190)
+e_estado = Entry(frame_bottom, width=20, justify='left', relief='solid')
+e_estado.place(x=160, y=220)
 
 #Sobre:
-app_sobre = Label(frame_bottom,text='Informações adicionais *', anchor=NW, font=('Ivy 10 bold'), bg=co1, fg=co4, relief='flat')
-app_sobre.place(x=15, y=260)
-app_sobre = Entry(frame_bottom, width=45, justify='left', relief='solid')
-app_sobre.place(x=15, y=290)
+l_sobre = Label(frame_bottom,text='Informações adicionais *', anchor=NW, font=('Ivy 10 bold'), bg=co1, fg=co4, relief='flat')
+l_sobre.place(x=15, y=260)
+e_sobre = Entry(frame_bottom, width=45, justify='left', relief='solid')
+e_sobre.place(x=15, y=290)
 
 #Botão inserir:
 b_inserir = Button(frame_bottom,command=inserir, text='Inserir', width=10, anchor=NW, font=('Ivy 7 bold'), bg=co6, fg=co1, relief='raised', overrelief='ridge')
 b_inserir.place(x=15, y=340)
 
 #Botão atualizar:
-b_inserir = Button(frame_bottom,text='Atualizar', width=10, anchor=NW, font=('Ivy 7 bold'), bg=co2, fg=co1, relief='raised', overrelief='ridge')
-b_inserir.place(x=110, y=340)
+b_atualizar = Button(frame_bottom,command=atualizar, text='Atualizar', width=10, anchor=NW, font=('Ivy 7 bold'), bg=co2, fg=co1, relief='raised', overrelief='ridge')
+b_atualizar.place(x=110, y=340)
 
 #Botão deletar:
-b_inserir = Button(frame_bottom,text='Deletar', width=10, anchor=NW, font=('Ivy 7 bold'), bg=co7, fg=co1, relief='raised', overrelief='ridge')
-b_inserir.place(x=205, y=340)
+b_deletar = Button(frame_bottom,command=deletar, text='Deletar', width=10, anchor=NW, font=('Ivy 7 bold'), bg=co7, fg=co1, relief='raised', overrelief='ridge')
+b_deletar.place(x=205, y=340)
 
 ################# Frame direita ###############
 
 def mostrar():
     
-    lista = []
+    global tree
+    
+    lista = mostrar_info()
 
     # lista para cabecario
     tabela_head = ['ID','Nome',  'email','telefone', 'Data', 'Estado','Sobre']

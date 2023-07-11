@@ -3,24 +3,24 @@ import sqlite3 as lite
 # Criando conexão
 con = lite.connect('data.db')
 
-
 #Inserindo Informações
 def inserir_info(i):
     with con:
         cur = con.cursor()
         query = "INSERT INTO form (nome, email, telefone, dia, estado, assunto) VALUES (?,?,?,?,?,?)"
         cur.execute(query, i)
+        
 
 
 #Lendo Informações
 
-def mostrar__info():
+def mostrar_info():
     lista = []
     with con:
         cur = con.cursor()
         query = "SELECT * FROM form"
         cur.execute(query)
-        info = cur.fetchall()
+        informacao = cur.fetchall()
 
         for i in informacao:
             lista.append(i)
@@ -35,7 +35,8 @@ def atualizar_info(i):
 
 
 #Apagando Informações
-with con:
-    cur = con.cursor()
-    query = "DELETE FROM form WHERE id=?"
-    cur.execute(query, [1])
+def deletar_info(i):
+    with con:
+        cur = con.cursor()
+        query = "DELETE FROM form WHERE id=?"
+        cur.execute(query, i)
